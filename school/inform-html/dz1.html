@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Сайт про те, як працює цей сайт</title>
+    <link rel="shortcut icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Code.svg/1200px-Code.svg.png" type="image/jpg">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap" rel="stylesheet">
+
+    <style>
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #111;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: #070;
+          border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: #050;
+        }
+        .rain {
+          background: linear-gradient(to right, red, orange , yellow, green, cyan, blue, violet);
+          color:transparent;
+          background-clip: text;
+        }
+        p {
+          word-break: break-all;
+        }
+        body {
+          font-family: 'Pangoline', cursive;
+        }
+        a {
+          color: #dfd;
+        }
+        a:hover {
+          color: #9c9;
+        }
+        code{
+          color: #dfd;
+        }
+    </style>
+</head>
+<body text="#eee">
+    <div style="padding-left: 10%; padding-right: 10%;">
+        <font size="+2">
+            <h1 align="center">Сайт про те, як працює цей сайт</h1>
+            <p>Тут я розкажу про те, як зробив цей сайт, стилі, шрифт, розмітку і звісно цей чудовий фон!</p>
+            <p>Почну з <b><span style="color:#FF0000">ш</span><span style="color:#FF5A00">р</span><span style="color:#FFB400">и</span><span style="color:#F0FF00">ф</span><span style="color:#96FF00">т</span><span style="color:#3CFF00">у</span> <span style="color:#00FF1E">т</span><span style="color:#00FF78">а</span> <span style="color:#00FFD2">к</span><span style="color:#00D2FF">о</span><span style="color:#0078FF">л</span><span style="color:#001EFF">ь</span><span style="color:#3C00FF">о</span><span style="color:#9600FF">р</span><span style="color:#F000FF">і</span><span style="color:#FF00B4">в</span><span style="color:#FF005A">:</span></b></p>
+            <ul type="square">
+                <li>Знаходимо на <a href="https://fonts.google.com" target="_blank">Goole Fonts</a> гарний шрифт і натискаємо на нього</li>
+                <li>На панелі <b><u>Styles</u></b> знаходимо <b><u>Select this style</u></b> і натискаємо</li>
+                <li>Код з відкритого віконечка, що починаеться з <big>link</big> копіюємо у <big>head</big></li>
+                <li>Код з <big>font-family</big> вставляємо у <big>body style="сюди"</big></li>
+                <p>Тепер ми маємо <s>жахливий шрифт, бо іншого ми знайти не могли</s> <b>новий чудовий шрифт.</b></p>
+                <li>Білий текст це просто <big>text="#eee"</big> у тегу <big>body</big></li>
+                <li>Для <span style="color:#FF5C5C">т</span><span style="color:#FFAD5C">а</span><span style="color:#FFFF5C">к</span><span style="color:#ADFF5C">о</span><span style="color:#5CFF5C">г</span><span style="color:#5CFFAD">о</span> <span style="color:#5CFFFF">т</span><span style="color:#5CADFF">е</span><span style="color:#5C5CFF">к</span><span style="color:#AD5CFF">с</span><span style="color:#FF5CFF">т</span><span style="color:#FF5CAD">у</span> існує гарний <a href="https://charlesstover.github.io/rainbow-text/" target="_blank"><b>сайт</b></a>, де достатньо просто ввести текст і натиснути "скопіювати HTML". Цей сайт просто генерує коди кольрів і робить за вас нудну роботу по <s>запиханню</s> вставлянню кожної букви у тег <big>span</big> та додаванню параметру <big>style="color:який небудь колір"</big></li>
+            </ul>
+            <br>
+            <p>У тегу <big>head</big> у мене є додатковий тег <big>style</big>. У ньому можна прописати стилі css для того, щоб вони додалися до кожного відповідного тегу. У моєму випадку там є параметри для посилань (тег <big>а</big>), блоків коду та абзаців - щоб були переноси тексту.</p>
+            <p>Також там є ще декілька параметрів. Ось вони:</p>
+            <div style="background-color: #0009;"><pre><code>        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #111;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: #070;
+          border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: #050;
+        }</code></pre></div>
+            <p>Завдяки цьому коду, зправа у вас не жахливий сірий прямокутник зі стрілками, а гарна тоненька лінія прокрутки.</p>
+            <p>І мабуть найцікавіше - це задній фон!</p>
+            <div style="background-color: #0009;"><pre><code>            var q = document.getElementById('q');
+            var red = 0;
+            var green = 255;
+            var blue = 0;
+            w=q.width=$(document).width();
+            h=q.height=$(document).height();
+            p=Array(256).join(1).split('');
+            c=q.getContext('2d');
+            c.fillStyle='rgba(0,0,0,1)';
+            m=Math;
+            setInterval(function(){
+                c.fillStyle='rgba(0,0,0,0.08)';
+                c.fillRect(0,0,w,h);
+                c.fillStyle='rgba('+red+','+green+','+blue+',1)';
+                p=p.map(function(v,i){
+                    r=m.random();
+                    c.fillText(String.fromCharCode(m.floor(2720+r*33)),i*10,v);
+                    v+=10;
+                    return v>768+r*1e4?0:v
+                })
+            },33)</code></pre></div>
+            <p>Ось цей чудовий набір символів!</p>
+            <p>Не буду намагатися його пояснити. Нас можуть зацікавити тільки перші три змінні: <big>red, green, blue</big>. Як не складно здогадатися, вони відповідають за колір. Можна їх змінити через консоль розробника на F<sup>12</sup>, а можна за допомогою цих кількох JS кнопок:</p>
+            <a href="javascript:red+=50">Додати червоного</a> <a href="javascript:red-=50">Відняти червоного</a> <a href="javascript:green+=50">Додати зеленого</a> <a href="javascript:green-=50">Відняти зеленого</a> <a href="javascript:blue+=50">Додати синього</a> <a href="javascript:blue-=50">Відняти синього</a>
+        </font>
+    </div>
+
+
+    <canvas id="q" style="position: absolute; z-index: -1; margin: 0; left: 0; top: 0;">
+        <script>
+            var q = document.getElementById('q');
+            var red = 0;
+            var green = 255;
+            var blue = 0;
+            w=q.width=$(document).width();
+            h=q.height=$(document).height();
+            p=Array(256).join(1).split('');
+            c=q.getContext('2d');
+            c.fillStyle='rgba(0,0,0)';
+            m=Math;
+            setInterval(function(){
+                c.fillStyle='rgba(0,0,0,0.05)';
+                c.fillRect(0,0,w,h);
+                c.fillStyle='rgba('+red+','+green+','+blue+',1)';
+                p=p.map(function(v,i){
+                    r=m.random();
+                    c.fillText(String.fromCharCode(m.floor(2720+r*33)),i*10,v);
+                    v+=12;
+                    return v>768+r*1e4?0:v
+                })
+            },33)
+        </script>
+    </canvas>
+
+</body></html>
