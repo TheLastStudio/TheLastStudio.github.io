@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/brython@3.8.8/brython.min.js">
+    </script>
+    <title>Hello, world!</title>
+  </head>
+  <body onload="brython()" class="bg-dark">
+
+    <div class="container-fluid">
+        <center id="master">
+        
+        <h1 class="text-light">Brutforse by module</h1>
+        <br>
+        
+        <input type="text" id="e1" class="form-control" size="40" id="in1" placeholder="Expression 1">
+        <input type="text" id="e2" class="form-control" size="40" id="in2" placeholder="Expression 2">
+        <input type="text" id="e3" class="form-control" size="40" id="in3" placeholder="Expression 3">
+        <input type="text" id="e4" class="form-control" size="40" id="in4" placeholder="Expression 4">
+        
+        <br>
+        
+        <div class="row">
+        <div class="col-8">
+            <input type="text" id="mod" class="form-control" size="40" id="in1" placeholder="Module">
+        </div>
+        <div class="col-4">
+            <button id="apply" class="btn btn-success">Apply forse</button>
+        </div>
+        </div>
+        
+        <br>
+        
+        
+        </center>
+    </div>
+    
+    
+    <script type="text/python">
+    from browser import document
+    from browser.html import TABLE, TR, TH, TD
+
+    a = "abobus"
+    
+    def action(event):
+        lines = [['X', 'E1', 'E2', 'E3', 'E4']]
+        es = [document['e1'].value, document['e2'].value, document['e3'].value, document['e4'].value]
+        for ee in range(4):
+            if es[ee]:
+                pass
+            else:
+                es[ee]="0"
+        mod = int(document['mod'].value)
+        for x in range(mod):
+            lines.append([str(x), eval("("+es[0].replace("x", str(x))+")%"+str(mod)),
+                           eval("("+es[1].replace("x", str(x))+")%"+str(mod)),
+                           eval("("+es[2].replace("x", str(x))+")%"+str(mod)),
+                           eval("("+es[3].replace("x", str(x))+")%"+str(mod))])
+        
+        t = TABLE()
+        t.attrs["class"] = "table table-dark table-bordered table-hover"
+
+        for line in lines:
+            t <= TR(TD(line[0])+TD(line[1])+TD(line[2])+TD(line[3])+TD(line[4]))
+        document['master']<= t
+
+    document["apply"].bind("click", action)
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
