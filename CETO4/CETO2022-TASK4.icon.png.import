@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/CETO2022-TASK4.icon.png-1161dddc0bd86cf96ab2106e337b501f.stex"
+path="res://.import/CETO2022-TASK4.icon.png-c0f478767ba1e568d956e5d8ea42b0ad.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://export/CETO2022-TASK4.icon.png"
-dest_files=[ "res://.import/CETO2022-TASK4.icon.png-1161dddc0bd86cf96ab2106e337b501f.stex" ]
+source_file="res://CETO4/CETO2022-TASK4.icon.png"
+dest_files=[ "res://.import/CETO2022-TASK4.icon.png-c0f478767ba1e568d956e5d8ea42b0ad.stex" ]
 
 [params]
 
