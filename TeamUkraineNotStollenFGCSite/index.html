@@ -21,7 +21,7 @@
 
 <body>
   <!-- Header -->
-  <header id="main-header">
+  <header id="main-header" class="opaque">
     <div class="row">
       <div class="logo">
 	       <a href="index.html">Team Ukraine</a>
@@ -36,9 +36,9 @@
         <ul id="nav" class="nav">
 	         <li class="current"><a class="smoothscroll" href="#about">About Us</a></li>
 		     <li><a class="smoothscroll" href="#news">News</a></li>
-	         <li><a class="smoothscroll" href="#ach">Achievements</a></li>
+	         <li><a class="smoothscroll" href="#testimonials">Achievements</a></li>
 	         <li><a class="smoothscroll" href="#sponsor">Sponsorship</a></li>
-	         <li><a class="smoothscroll" href="#testimonials">Team</a></li>
+	         <li><a class="smoothscroll" href="#team">Team</a></li>
 			 <li><a class="smoothscroll" href="#contact">Contact Us</a></li>
         </ul>
       </nav>
@@ -50,22 +50,20 @@
 	    </ul>
     </div>
   </header>
-  
   <!-- Top Gallery -->
-	<div class="hh_container">
-	  <div class="hh_box">
-		<img src="https://source.unsplash.com/1000x800">
-	  </div>
-	  <div class="hh_box">
-		<img src="https://source.unsplash.com/1000x802">
-	  </div>
-	  <div class="hh_box">
-		<img src="https://source.unsplash.com/1000x804">
-	  </div>
-	  <div class="hh_box">
-		<img src="https://source.unsplash.com/1000x806">
-	  </div>
-	</div>
+  <br/>
+  <br/>
+  <div class="cards">
+	  <img src="images/ach/member01-k.jpg" alt="Sample photo">
+	  <img src="images/ach/member02-k.jpg" alt="Sample photo">
+	  <img src="images/ach/member03-k.jpg" alt="Sample photo">
+	  <img src="images/ach/member04-k.jpg" alt="Sample photo">
+	  <img src="images/ach/member05-k.jpg" alt="Sample photo">
+	  <img src="images/ach/member01-k.jpg" alt="Sample photo">
+	  <img src="images/ach/member02-k.jpg" alt="Sample photo">
+	  <img src="images/ach/member03-k.jpg" alt="Sample photo">
+	  <img src="images/ach/member04-k.jpg" alt="Sample photo">
+ </div>
   <!--
 	<div id="carousel">
 	  <figure id="spinner">
@@ -83,6 +81,7 @@
 	<span style="float:right" class="ss-icon" onclick="galleryspin('')">&gt;</span>
   -->
   <!-- About Us -->
+  <br/>
   <section id="about">
     <div class="row section-head">
       <div class="twelve columns">
@@ -92,17 +91,18 @@
     </div>
 	<div class="row">
       <div class="eight columns">
-        <p>We are the Ukrainian team at the FGS.... </p>
-		<p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-		<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      </div>
+        <p>We are a team of courageous and intelligent kids that are honored to represent Ukraine at the FIRST Global Challenge. Despite the size of our team, we are optimistic that we will perform well in the competition. We make an effort to demonstrate our capacity for overcoming challenges and roadblocks en route to success. We are thrilled to have the chance to represent Ukraine at the competition - each nation is represented by just one team - and it is crucial for both us and Ukraine to remember and demonstrate that, despite its challenging circumstances, it is not significantly worse than other nations.</p>
+		<p>We anticipate that our participation in the FIRST Global Challenge will motivate other Ukrainian students to pursue careers in STEM sectors beyond the actual tournament. We want to be a part of the global movement of innovators and problem solvers since we think Ukraine has a huge potential to contribute to it.</p>
+		<p>We want to show that Ukraine's people, not its problems, are what characterize our nation and that we are proud to represent them at the FIRST Global Challenge. We are thrilled to have the chance to present our talents and skills on a global scale and we are happy to be Ukrainians.</p>
+	  </div>
 	  <div class="four columns">
-        <img src="images/about/logogo.jpg">
+        <img src="images/about/logogo.png">
       </div>
     </div>
   </section>
   
   <!-- News -->
+  <br/>
   <section id="news">
     <!-- Latest news section -->
     <div class="row section-head">
@@ -128,6 +128,21 @@
             </a>
           </div>
         </div> -->
+		<!-- Post 3 -->
+        <div class="bgrid folio-item">
+          <div class="item-wrap">
+            <a href="#modal-03">
+              <img src="images/news/sorting.jpg" alt="Underwater">
+              <div class="overlay"></div>
+              <div class="portfolio-item-meta">
+                <h5>Unboxing for FGC 2023</h5>
+                <p>FGC 2023</p>
+              </div>
+              <div class="link-icon"><i class="fa fa-plus"></i></div>
+            </a>
+          </div>
+        </div>
+		
 		<!-- Post 2 -->
         <div class="bgrid folio-item">
           <div class="item-wrap">
@@ -147,7 +162,7 @@
         <div class="bgrid folio-item">
           <div class="item-wrap">
             <a href="#modal-01">
-              <img src="https://scontent.fiev11-1.fna.fbcdn.net/v/t39.30808-6/336924254_1460873701110516_4847230092003048221_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=yWOL3op-y1gAX-ITBrd&_nc_ht=scontent.fiev11-1.fna&oh=00_AfCzQSKzF5Ts8_4G_mzpaBA-qQWnPAcptJV5mq2yCQxwkQ&oe=64415F70" alt="Underwater">
+              <img src="images/news/first_meet.jpg" alt="Underwater">
               <div class="overlay"></div>
               <div class="portfolio-item-meta">
                 <h5>Our first meeting</h5>
@@ -175,7 +190,23 @@
           <a href="#" class="popup-modal-dismiss">Close</a>
         </div>
       </div> -->
-      <!-- Modal 2 -->
+      <!-- Modal 3 -->
+      <div id="modal-03" class="popup-modal mfp-hide">
+        <div class="media">
+          <img src="images/news/sorting.jpg" alt="Underwater" />
+        </div>
+        <div class="description-box">
+          <h4>Unboxing for FGC 2023</h4>
+          <p>Finally, we have released the unforgettable atmosphere of FGC 2022 from the boxes, disassembling the kit and getting inspired by the updated team for the new season!</p>
+          <span class="categories">FGC 2023</span>
+        </div>
+        <div class="link-box group">
+          <a href="https://www.facebook.com/fgc.ukraine/posts/pfbid02dT1QKcxLoN54eqDZruFth2S58QyRwDU3CkCQLJSneD476YkEtBPYK64UQnAbmcwCl">Details</a>
+          <a href="#" class="popup-modal-dismiss">Close</a>
+        </div>
+      </div>
+      
+	  <!-- Modal 2 -->
       <div id="modal-02" class="popup-modal mfp-hide">
         <div class="media">
           <img src="images/news/singapoop.jpg" alt="Underwater" />
@@ -194,7 +225,7 @@
       <!-- Modal 1 -->
       <div id="modal-01" class="popup-modal mfp-hide">
         <div class="media">
-          <img src="https://scontent.fiev11-1.fna.fbcdn.net/v/t39.30808-6/336924254_1460873701110516_4847230092003048221_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=yWOL3op-y1gAX-ITBrd&_nc_ht=scontent.fiev11-1.fna&oh=00_AfCzQSKzF5Ts8_4G_mzpaBA-qQWnPAcptJV5mq2yCQxwkQ&oe=64415F70" alt="Underwater" />
+          <img src="images/news/first_meet.jpg" alt="Underwater" />
         </div>
         <div class="description-box">
           <h4>Our first meeting</h4>
@@ -210,72 +241,93 @@
   </section>
   
   <!-- Ach -->
-  <br />
-  <section id="ach">
-  <div class="row team section-head">
-      <div class="twelve columns">
-        <h1>Our achievements<span></span></h1>
-        <hr />
+  <br/>
+  <section id="testimonials">
+    <div class="row content flex-container">
+      <div id="testimonial-slider" class="flexslider">
+        <ul class="slides">
+          <!-- Quote 1 -->
+          <li>
+			<div class="testimonial-author">
+              <img src="images/ach/raja_fgc2022.jpg" alt="Author image">
+              <div class="author-info">
+                Rajaâ Cherkaoui El Moursli Award for Courageous Achievement
+                <span class="position">FGC 2022</span>
+              </div>
+            </div>
+          </li>
+		  
+		  <!-- Quote 2 -->
+          <li>
+			<div class="testimonial-author">
+              <img src="images/ach/geneva_fgc2022.jpg" alt="Author image">
+              <div class="author-info">
+                FGC 2022 17/162
+                <span class="position">FGC 2022</span>
+              </div>
+            </div>
+          </li>
+		  
+		  <!-- Quote 3 -->
+          <li>
+			<div class="testimonial-author">
+              <img src="images/ach/geneva_fgc2022.jpg" alt="Author image">
+              <div class="author-info">
+                FGC 2022 Playoff 5/8
+                <span class="position">FGC 2022</span>
+              </div>
+            </div>
+          </li>
+		  
+		  <!-- Quote 4 -->
+          <li>
+			<div class="testimonial-author">
+              <img src="images/ach/elegant_roboco2023.jpg" alt="Author image">
+              <div class="author-info">
+                Most Elegantly Engineered robot
+                <span class="position">RoboCo 2023</span>
+              </div>
+            </div>
+          </li>
+		  
+		  <!-- Quote 5 -->
+          <li>
+			<div class="testimonial-author">
+              <img src="images/ach/roboco2023.jpg" alt="Author image">
+              <div class="author-info">
+                Roboco 2023 Qualifiers 21/44
+                <span class="position">RoboCo 2023</span>
+              </div>
+            </div>
+          </li>
+		  
+		  <!-- Quote 6 -->
+          <li>
+			<div class="testimonial-author">
+              <img src="images/ach/roboco2023.jpg" alt="Author image">
+              <div class="author-info">
+                Roboco 2023 Playoffs 6/24
+                <span class="position">RoboCo 2023</span>
+              </div>
+            </div>
+          </li>
+		  
+		  <!-- Quote 7 -->
+          <li>
+			<div class="testimonial-author">
+              <img src="images/ach/roboco2023.jpg" alt="Author image">
+              <div class="author-info">
+                Roboco 2023 Finals 7/8
+                <span class="position">RoboCo 2023</span>
+              </div>
+            </div>
+          </li>
+		  
+		</ul>
       </div>
     </div>
-    <div class="row">
-      <div id="team-wrapper" class="bgrid-fourth s-bgrid-third tab-bgrid-half mob-bgrid-whole group">
-        <!-- 1 -->
-        <div class="bgrid member">
-          <div class="member-pic">
-            <img src="images/ach/member01-k.jpg" alt=""/>
-            <div class="mask"></div>
-          </div>
-          <div class="member-name">
-            <h3>Best Indiana style robot</h3>
-            <span>RoboCo</span>
-          </div>
-          <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor.</p>
-          
-        </div>
-        <!-- 2 -->
-        <div class="bgrid member">
-          <div class="member-pic">
-            <img src="images/ach/member03-k.jpg" alt=""/>
-            <div class="mask"></div>
-          </div>
-          <div class="member-name">
-            <h3>Most African robot</h3>
-            <span>RoboCo</span>
-          </div>
-          <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor.</p>
-          
-        </div>
-        <!-- 3 -->
-        <div class="bgrid member">
-          <div class="member-pic">
-            <img src="images/ach/member04-k.jpg" alt=""/>
-            <div class="mask"></div>
-          </div>
-          <div class="member-name">
-            <h3>Most ellegant solution</h3>
-            <span>RoboCo</span>
-          </div>
-          <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor.</p>
-          
-        </div>
-        <!-- 4 -->
-        <div class="bgrid member">
-          <div class="member-pic">
-            <img src="images/ach/member05-k.jpg" alt=""/>
-            <div class="mask"></div>
-          </div>
-          <div class="member-name">
-            <h3>Sussy prize</h3>
-            <span>FGC 2022</span>
-          </div>
-          <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor.</p>
-          
-        </div>
-      </div>
-    </div>
-	</section>
-  
+  </section>
+  <br/>
   <!-- Sponsorship -->
   <section id="sponsor">
     <div class="row section-head">
@@ -296,37 +348,88 @@
     </div>
   </section>
   
-  <!-- Quotes -->
-  <section id="testimonials">
-    <div class="row content flex-container">
-      <div id="testimonial-slider" class="flexslider">
-        <ul class="slides">
-          <!-- Quote 1 -->
-          <li>
-			<div class="testimonial-author">
-              <img src="images/avatars/avatar-1.jpg" alt="Author image">
-              <div class="author-info">
-                Ikhor Gancharenov
-                <span class="position">Programisto, drivero</span>
-              </div>
-            </div>
-            <h3>BIOGRAPHY Your work is going to fill a large part of your life, and the only way to be truly satisfied is...</h3>
-          </li>
-          <!-- Quote 2 -->
-          <li>
-			<div class="testimonial-author">
-              <img src="images/avatars/avatar-2.jpg" alt="Author image">
-              <div class="author-info">
-                Timophii Stadnichenko
-                <span class="position">Programisto</span>
-              </div>
-            </div>
-            <h3>BIOGRAPHY Your work is going to fill a large part of your life, and the only way to be truly satisfied is...</h3>
-          </li>
-        </ul>
+  <!-- Team -->
+  <section id="team">
+  <div class="row team section-head">
+      <div class="twelve columns">
+        <h1>Our team<span></span></h1>
+        <hr />
       </div>
     </div>
-  </section>
+    <div class="row">
+      <div id="team-wrapper" class="bgrid-fourth s-bgrid-third tab-bgrid-half mob-bgrid-whole group">
+        <!-- 1 -->
+        <div class="bgrid member">
+          <div class="member-pic">
+            <img src="images/team/ihor.jpg" alt=""/>
+            <div class="mask"></div>
+          </div>
+          <div class="member-name">
+            <h3>Ihor</h3>
+            <!--<span>Хто ти в команді?</span>-->
+          </div>
+          <p>He is 15 years old and attends Kyiv's Natural Science Lyceum No145. He's been interested in robotics for 6 years and joined Team Ukraine to solve intriguing challenges, gain new experiences, and have fun with his teammates.</p>
+        </div>
+        
+		<!-- 2 -->
+		<div class="bgrid member">
+          <div class="member-pic">
+            <img src="images/team/tima.jpg" alt=""/>
+            <div class="mask"></div>
+          </div>
+          <div class="member-name">
+            <h3>Tima</h3>
+            <span>Хто ти в команді?</span>
+          </div>
+          <p>He is 15 years old and attends Kyiv's Natural Science Lyceum No145. He have been involved in programming and robotics for a long time. Also has several creative hobbies: piano and guitar, composition.</p>
+        </div>
+        
+		<!-- 3 -->
+		<div class="bgrid member">
+          <div class="member-pic">
+            <img src="images/team/hlib.jpg" alt=""/>
+            <div class="mask"></div>
+          </div>
+          <div class="member-name">
+            <h3>Hlib</h3>
+            <span>Хто ти в команді?</span>
+          </div>
+          <p>He is 15 years old and attends Kyiv's School-Gymnasium No240. His interests include music, computer games, and Lego. He learned about FIRST Global from Igor, who used to work in robots and is now a part of the team.</p>
+        </div>
+        
+		<!-- 4 -->
+		<div class="bgrid member">
+          <div class="member-pic">
+            <img src="images/team/vlad.jpg" alt=""/>
+            <div class="mask"></div>
+          </div>
+          <div class="member-name">
+            <h3>Vlad</h3>
+            <span>Хто ти в команді?</span>
+          </div>
+          <p>He is 15 years old and attends school in Kyiv. Lego, computer games, and painting are among his interests. He discovered FIRST Global through our mentor and is now a part of the team.</p>
+        </div>
+        
+		<!-- 5 -->
+		<div class="bgrid member">
+          <div class="member-pic">
+            <img src="images/team/ihor.jpg" alt=""/>
+            <div class="mask"></div>
+          </div>
+          <div class="member-name">
+            <h3>Yuliia</h3>
+            <span>Mentor</span>
+          </div>
+        </div>
+        
+		<!-- 5.1 -->
+		<div class="bgrid member">
+          <p>My name is Yuliia and I am a team mentor. Since my childhood, I have been interested in computer technologies and this interest led me to pursue a Bachelor's Degree in Applied Mathematics, from the National Technical University of Ukraine ‘Igor Sikorsky Kyiv Polytechnic Institute’. Although I have a strong foundation in Math and Programming, my real passion lies in Robotics. That's why I participated in the FIRST Global </p>
+        </div>
+        
+      </div>
+    </div>
+	</section>
   
   <!-- Contacts -->
   <section id="contact">
@@ -335,8 +438,13 @@
 		<iframe allowtransparency="true" src="https://docs.google.com/forms/d/e/1FAIpQLSd78aHGBPJEv5c0DdOFnzCsKeFutajEBQ0-uxapAPIbio1yIg/viewform?embedded=true" width="100%" height="1110" frameborder="0" marginheight="10" marginwidth="10">Завантаження…</iframe>
 	</div>
 	<div class="six columns">
-        <p>CONTACTS</p>
-		<p>SOME INFO</p>
+        <h2><a href="https://www.facebook.com/fgc.ukraine"><i class="fa fa-facebook"></i> Facebook</a></h2>
+	    <h2><a href="https://www.instagram.com/ukrainian_robotics_team/"><i class="fa fa-instagram"></i> Instagram</a></h2>
+		<h2><a href="https://www.youtube.com/@ukrainian_robotics_team"><i class="fa fa-youtube"></i> Youtube</a></h2>
+		<h2><a href="https://t.me/ukrainian_robotics_team"><i class="fa fa-paper-plane"></i> Telegram channel</a></h2>
+		<p></p>
+		<p><b>+388005553555</b></p>
+		<p><b>teamukraine@ymail.com</b></p>
     </div>
   </div>
   </section>
@@ -355,7 +463,7 @@
         </div>
         <ul class="copyright">
           <li>&copy; Copyright 2023 Team Ukraine</li>
-          <li>Design by Yuliia Shevchenko and Stadniichuk Timofiy</a></li>
+          <li>Design by Yuliia Shevchenko and Timofiy Stadniichuk</a></li>
         </ul>
       </div>
     </footer>

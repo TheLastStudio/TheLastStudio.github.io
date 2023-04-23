@@ -89,3 +89,16 @@ div#carousel ~ span:hover { color: #888; cursor: pointer; }
 ::-webkit-scrollbar-thumb:hover {
   background: #EBFF00;
 }
+
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    flex-direction: row;
+    max-height: 100vh;
+	justify-content: center;
+  }
+  .cards img {
+    margin: 2px;
+    max-width: 18vh;
+  }
