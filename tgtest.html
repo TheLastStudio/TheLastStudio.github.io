@@ -13,16 +13,24 @@
   <button type="submit">Надіслати</button>
 </form>
 
+<!-- тут будемо виводити повідомлення -->
+<div id="output" style="margin-top:20px; color: green;"></div>
+
 <script>
 const tg = window.Telegram.WebApp;
+tg.ready();
 
 document.getElementById("myForm").addEventListener("submit", function(e){
     e.preventDefault();
+
     const formData = new FormData(this);
     const data = {};
-    formData.forEach((value, key) => data[key] = value);
+    formData.forEach((value, key) => { data[key] = value; });
 
-    // надсилаємо JSON у бот
+    // замість console.log — виводимо на екран
+    document.getElementById("output").textContent = "Надсилаю дані: " + JSON.stringify(data);
+
+    // відправка даних боту
     tg.sendData(JSON.stringify(data));
 });
 </script>
