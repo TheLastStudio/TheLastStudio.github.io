@@ -1,38 +1,73 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Web App</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web App Form</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            color: var(--tg-theme-text-color);
+            background: var(--tg-theme-bg-color);
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid var(--tg-theme-hint-color);
+            border-radius: 4px;
+            background: var(--tg-theme-secondary-bg-color);
+            color: var(--tg-theme-text-color);
+        }
+        button {
+            background-color: var(--tg-theme-button-color);
+            color: var(--tg-theme-button-text-color);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
-<h2>Проста форма</h2>
-<form id="myForm">
-  <label>Ім'я: <input type="text" name="name" required></label><br><br>
-  <label>Email: <input type="email" name="email" required></label><br><br>
-  <button type="submit">Надіслати</button>
-</form>
+    <h1>Order Form</h1>
+    <div class="form-group">
+        <label for="item">Item Name:</label>
+        <input type="text" id="item" name="item" required>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" min="1" required>
+    </div>
+    <button id="submitButton">Submit Order</button>
 
-<!-- тут будемо виводити повідомлення -->
-<div id="output" style="margin-top:20px; color: green;"></div>
+    <script>
+        Telegram.WebApp.ready();
+        Telegram.WebApp.MainButton.setText('Submit Order').show();
 
-<script>
-const tg = window.Telegram.WebApp;
-tg.ready();
+        document.getElementById('submitButton').addEventListener('click', function() {
+            const item = document.getElementById('item').value;
+            const quantity = document.getElementById('quantity').value;
 
-document.getElementById("myForm").addEventListener("submit", function(e){
-    e.preventDefault();
-
-    const formData = new FormData(this);
-    const data = {};
-    formData.forEach((value, key) => { data[key] = value; });
-
-    // замість console.log — виводимо на екран
-    document.getElementById("output").textContent = "Надсилаю дані: " + JSON.stringify(data);
-
-    // відправка даних боту
-    tg.sendData(JSON.stringify(data));
-});
-</script>
+            if (item && quantity) {
+                const data = JSON.stringify({ item: item, quantity: parseInt(quantity) });
+                Telegram.WebApp.sendData(data);
+                Telegram.WebApp.close();
+            } else {
+                Telegram.WebApp.showAlert('Please fill in all fields.');
+            }
+        });
+    </script>
 </body>
 </html>
