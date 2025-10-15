@@ -131,8 +131,9 @@
         }
       
         const updateStars = (value) => {
+          const n = stars.length;
           stars.forEach((s, idx) => {
-            s.classList.toggle("active", idx < value);
+            s.classList.toggle("active", idx >= n - value);
           });
         };
       
@@ -307,6 +308,7 @@
   </script>
 </body>
 </html>
+
 
 
 
