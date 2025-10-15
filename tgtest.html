@@ -112,28 +112,28 @@
       else if (q.type === "rating") {
         const container = document.createElement("div");
         container.className = "rating-container";
-        
+      
         const hiddenInput = document.createElement("input");
         hiddenInput.type = "hidden";
         hiddenInput.name = `q${index}`;
         if (q.required) hiddenInput.required = true;
         container.appendChild(hiddenInput);
-        
+      
         const stars = [];
         const max = q.max || 5;
-        for (let i = 1; i <= max; i++) {
+      
+        for (let i = 0; i < max; i++) {
           const star = document.createElement("span");
           star.className = "star";
           star.textContent = "★";
-          star.dataset.value = i;
+          star.dataset.value = i + 1;
           container.appendChild(star);
           stars.push(star);
         }
       
         const updateStars = (value) => {
-          const n = stars.length;
-          stars.forEach((s, idx) => {
-            s.classList.toggle("active", idx >= n - value);
+          stars.forEach(s => {
+            s.classList.toggle("active", s.dataset.value <= value);
           });
         };
       
@@ -143,10 +143,20 @@
             hiddenInput.value = val;
             updateStars(val);
           });
+          s.addEventListener("mouseenter", () => {
+            const val = parseInt(s.dataset.value);
+            stars.forEach(star => star.classList.toggle("hover", star.dataset.value <= val));
+          });
+          s.addEventListener("mouseleave", () => {
+            const val = parseInt(hiddenInput.value) || 0;
+            stars.forEach(star => star.classList.remove("hover"));
+            updateStars(val);
+          });
         });
       
         div.appendChild(container);
       }
+
 
       else if (q.type === "single") {
         const radios = [];
@@ -308,6 +318,7 @@
   </script>
 </body>
 </html>
+
 
 
 
