@@ -47,6 +47,29 @@
       width: 100%;
       cursor: pointer;
     }
+    .rating-container {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 10px 0;
+      font-size: 32px;
+      user-select: none;
+    }
+    
+    .star {
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .star.active {
+      color: #FFD700;
+    }
+    
+    .star:hover,
+    .star:hover ~ .star {
+      color: #FFD70066;
+    }
   </style>
 </head>
 <body>
@@ -88,20 +111,41 @@
       }
 
       else if (q.type === "rating") {
-        for (let i = 1; i <= 5; i++) {
-          const opt = document.createElement("div");
-          opt.className = "option";
-          const r = document.createElement("input");
-          r.type = "radio";
-          r.name = `q${index}`;
-          r.value = i;
-          if (q.required && i === 1) r.required = true;
-          const lbl = document.createElement("label");
-          lbl.textContent = "⭐".repeat(i);
-          opt.appendChild(r);
-          opt.appendChild(lbl);
-          div.appendChild(opt);
+        const container = document.createElement("div");
+        container.className = "rating-container";
+        
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = `q${index}`;
+        if (q.required) hiddenInput.required = true;
+        container.appendChild(hiddenInput);
+        
+        const stars = [];
+        const max = q.max || 5;
+        for (let i = 1; i <= max; i++) {
+          const star = document.createElement("span");
+          star.className = "star";
+          star.textContent = "★";
+          star.dataset.value = i;
+          container.appendChild(star);
+          stars.push(star);
         }
+      
+        const updateStars = (value) => {
+          stars.forEach((s, idx) => {
+            s.classList.toggle("active", idx < value);
+          });
+        };
+      
+        stars.forEach((s) => {
+          s.addEventListener("click", () => {
+            const val = parseInt(s.dataset.value);
+            hiddenInput.value = val;
+            updateStars(val);
+          });
+        });
+      
+        div.appendChild(container);
       }
 
       else if (q.type === "single") {
@@ -264,6 +308,7 @@
   </script>
 </body>
 </html>
+
 
 
 
