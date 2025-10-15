@@ -55,7 +55,6 @@
       margin: 10px 0;
       font-size: 32px;
       user-select: none;
-      flex-direction: row-reverse;
     }
     
     .star {
@@ -64,10 +63,12 @@
       transition: color 0.2s;
     }
     
-    .star.active,
-    .star:hover,
-    .star:hover ~ .star {
+    .star.active {
       color: #FFD700;
+    }
+    
+    .star.hover {
+      color: #FFD70099;
     }
   </style>
 </head>
@@ -122,40 +123,46 @@
         const stars = [];
         const max = q.max || 5;
       
-        for (let i = 0; i < max; i++) {
+        for (let i = 1; i <= max; i++) {
           const star = document.createElement("span");
           star.className = "star";
           star.textContent = "★";
-          star.dataset.value = i + 1;
+          star.dataset.value = i;
           container.appendChild(star);
           stars.push(star);
         }
       
         const updateStars = (value) => {
           stars.forEach(s => {
-            s.classList.toggle("active", s.dataset.value <= value);
+            const val = parseInt(s.dataset.value);
+            s.classList.toggle("active", val <= value);
           });
         };
       
         stars.forEach((s) => {
+          s.addEventListener("mouseenter", () => {
+            const val = parseInt(s.dataset.value);
+            stars.forEach(star => {
+              const starVal = parseInt(star.dataset.value);
+              star.classList.toggle("hover", starVal <= val);
+            });
+          });
+      
+          s.addEventListener("mouseleave", () => {
+            stars.forEach(star => star.classList.remove("hover"));
+            updateStars(parseInt(hiddenInput.value) || 0);
+          });
+      
           s.addEventListener("click", () => {
             const val = parseInt(s.dataset.value);
             hiddenInput.value = val;
-            updateStars(val);
-          });
-          s.addEventListener("mouseenter", () => {
-            const val = parseInt(s.dataset.value);
-            stars.forEach(star => star.classList.toggle("hover", star.dataset.value <= val));
-          });
-          s.addEventListener("mouseleave", () => {
-            const val = parseInt(hiddenInput.value) || 0;
-            stars.forEach(star => star.classList.remove("hover"));
             updateStars(val);
           });
         });
       
         div.appendChild(container);
       }
+
 
 
       else if (q.type === "single") {
@@ -318,6 +325,7 @@
   </script>
 </body>
 </html>
+
 
 
 
