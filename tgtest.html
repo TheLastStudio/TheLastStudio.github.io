@@ -1,153 +1,179 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Опитування</title>
-<style>
-  body { font-family: sans-serif; padding: 1em; }
-  div.question { margin-bottom: 1em; }
-  label { display: block; }
-</style>
+  <meta charset="UTF-8" />
+  <title>Опитування</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: var(--tg-theme-bg-color);
+      color: var(--tg-theme-text-color);
+      margin: 0;
+      padding: 1em;
+    }
+    h2 {
+      text-align: center;
+    }
+    .question {
+      margin: 1em 0;
+      padding: 1em;
+      border-radius: 12px;
+      background: var(--tg-theme-secondary-bg-color);
+    }
+    label {
+      display: block;
+      margin-bottom: 0.3em;
+      font-weight: 600;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.5em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    .option {
+      margin: 0.3em 0;
+    }
+    button {
+      background: var(--tg-theme-button-color);
+      color: var(--tg-theme-button-text-color);
+      border: none;
+      padding: 0.8em 1.2em;
+      border-radius: 8px;
+      font-size: 1em;
+      width: 100%;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-<h2>Опитування</h2>
-<form id="voteForm"></form>
-<button id="submitBtn">Надіслати</button>
+  <h2>Опитування</h2>
+  <form id="vote-form"></form>
 
-<script>
-let Telegram = window.Telegram ? window.Telegram.WebApp : null;
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-// fallback для тестування без Telegram
-const TEST_MODE = !Telegram;
-if(TEST_MODE) {
-    console.log("Тестовий режим: відповіді не надсилатимуться у Telegram");
-}
+    // --- Отримання JSON із base64 у параметрах ---
+    const params = new URLSearchParams(window.location.search);
+    const base64 = params.get("data");
+    const decoded = JSON.parse(atob(base64));
 
-// отримуємо JSON з URL (base64)
-function getVoteData() {
-  const params = new URLSearchParams(window.location.search);
-  const b64 = params.get("data");
-  if(!b64) return null;
-  try { return JSON.parse(atob(b64)); }
-  catch(e) { console.error(e); return null; }
-}
+    const form = document.getElementById("vote-form");
 
-const voteData = getVoteData();
-if(!voteData) document.body.innerHTML = "<p>Не вдалося завантажити опитування.</p>";
+    function createQuestion(q, index) {
+      const div = document.createElement("div");
+      div.className = "question";
+      const label = document.createElement("label");
+      label.innerHTML = `${index + 1}. ${q.text}`;
+      div.appendChild(label);
 
-// створюємо форму
-function createForm(json) {
-  const form = document.getElementById("voteForm");
-  json.questions.forEach((q,index) => {
-    const div = document.createElement("div");
-    div.className = "question";
-    div.dataset.index = index;
-    div.dataset.type = q.type;
-
-    const p = document.createElement("p");
-    p.textContent = q.text;
-    div.appendChild(p);
-
-    if(q.type === "text") {
-      const input = document.createElement("input");
-      input.type = "text";
-      input.name = `q${index}`;
-      if(q.regex) input.dataset.regex = q.regex;
-      div.appendChild(input);
-    }
-
-    if(q.type === "single" || q.type === "multi") {
-      q.options.forEach(opt => {
-        const label = document.createElement("label");
-        const inp = document.createElement("input");
-        inp.type = (q.type === "single") ? "radio" : "checkbox";
-        inp.name = `q${index}`;
-        inp.value = opt;
-        label.appendChild(inp);
-        label.appendChild(document.createTextNode(" " + opt));
-        div.appendChild(label);
-      });
-
-      // "Інше" опціонально
-      if(q.allow_other) {
-        const label = document.createElement("label");
-        const inp = document.createElement("input");
-        inp.type = (q.type === "single") ? "radio" : "checkbox";
-        inp.name = `q${index}`;
-        inp.value = "__other__";
-        label.appendChild(inp);
-        label.appendChild(document.createTextNode(" Інше: "));
-        const textInput = document.createElement("input");
-        textInput.type = "text";
-        textInput.style.display = "none";
-        label.appendChild(textInput);
-
-        // показати текстове поле тільки при виборі "Інше"
-        inp.addEventListener("change", e => {
-            textInput.style.display = inp.checked ? "inline-block" : "none";
-        });
-        div.appendChild(label);
+      if (q.type === "text") {
+        const input = document.createElement("input");
+        input.type = "text";
+        if (q.regex) input.pattern = q.regex;
+        input.name = `q${index}`;
+        div.appendChild(input);
       }
-    }
 
-    form.appendChild(div);
-  });
-}
-
-createForm(voteData);
-
-// збирання даних
-function collectData() {
-  const obj = {};
-  voteData.questions.forEach((q,index) => {
-    const name = `q${index}`;
-    const div = document.querySelector(`div.question[data-index="${index}"]`);
-    if(q.type === "text") {
-      const input = div.querySelector(`input[name="${name}"]`);
-      if(input.dataset.regex) {
-        const regex = new RegExp(input.dataset.regex);
-        if(!regex.test(input.value)) {
-          alert(`Помилка у питанні: ${q.text}`);
-          throw "regex fail";
+      else if (q.type === "rating") {
+        for (let i = 1; i <= 5; i++) {
+          const opt = document.createElement("div");
+          opt.className = "option";
+          const r = document.createElement("input");
+          r.type = "radio";
+          r.name = `q${index}`;
+          r.value = i;
+          const lbl = document.createElement("label");
+          lbl.textContent = "⭐".repeat(i);
+          opt.appendChild(r);
+          opt.appendChild(lbl);
+          div.appendChild(opt);
         }
       }
-      obj[name] = input.value;
-    } else if(q.type === "single") {
-      let val = div.querySelector(`input[name="${name}"]:checked`);
-      if(val) {
-        if(val.value === "__other__") {
-          const otherVal = val.nextElementSibling.value;
-          obj[name] = "Інше: " + otherVal;
-        } else obj[name] = val.value;
-      }
-    } else if(q.type === "multi") {
-      let vals = [];
-      div.querySelectorAll(`input[name="${name}"]:checked`).forEach(i => {
-        if(i.value === "__other__") {
-          vals.push("Інше: " + i.nextElementSibling.value);
-        } else vals.push(i.value);
-      });
-      obj[name] = vals;
-    }
-  });
-  return obj;
-}
 
-// надсилання
-document.getElementById("submitBtn").addEventListener("click", () => {
-  try {
-    const data = collectData();
-    if(TEST_MODE) {
-      console.log("Відповідь (тестовий режим):", data);
-      alert("Відповідь зібрана. Подивись у консолі.");
-    } else {
-      Telegram.sendData(JSON.stringify(data));
+      else if (q.type === "single") {
+        q.options.forEach(o => {
+          const opt = document.createElement("div");
+          opt.className = "option";
+          const r = document.createElement("input");
+          r.type = "radio";
+          r.name = `q${index}`;
+          r.value = o;
+          const lbl = document.createElement("label");
+          lbl.textContent = o;
+          opt.appendChild(r);
+          opt.appendChild(lbl);
+          div.appendChild(opt);
+        });
+        if (q.other) {
+          const other = document.createElement("input");
+          other.type = "text";
+          other.placeholder = "Інше...";
+          other.name = `q${index}_other`;
+          div.appendChild(other);
+        }
+      }
+
+      else if (q.type === "multi") {
+        q.options.forEach(o => {
+          const opt = document.createElement("div");
+          opt.className = "option";
+          const c = document.createElement("input");
+          c.type = "checkbox";
+          c.name = `q${index}`;
+          c.value = o;
+          const lbl = document.createElement("label");
+          lbl.textContent = o;
+          opt.appendChild(c);
+          opt.appendChild(lbl);
+          div.appendChild(opt);
+        });
+        if (q.other) {
+          const other = document.createElement("input");
+          other.type = "text";
+          other.placeholder = "Інше...";
+          other.name = `q${index}_other`;
+          div.appendChild(other);
+        }
+      }
+
+      form.appendChild(div);
     }
-  } catch(e) {
-    console.warn("Не надіслано:", e);
-  }
-});
-</script>
+
+    decoded.questions.forEach(createQuestion);
+
+    const submitBtn = document.createElement("button");
+    submitBtn.textContent = "Надіслати відповіді";
+    form.appendChild(submitBtn);
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const data = {};
+      decoded.questions.forEach((q, i) => {
+        if (q.type === "multi") {
+          data[q.text] = Array.from(form.querySelectorAll(`input[name=q${i}]:checked`))
+            .map(c => c.value);
+          const other = form.querySelector(`input[name=q${i}_other]`);
+          if (other && other.value) data[q.text].push(other.value);
+        }
+        else if (q.type === "single") {
+          const chosen = form.querySelector(`input[name=q${i}]:checked`);
+          const other = form.querySelector(`input[name=q${i}_other]`);
+          data[q.text] = chosen ? chosen.value : (other?.value || null);
+        }
+        else {
+          const field = form.querySelector(`[name=q${i}]`);
+          data[q.text] = field?.value || null;
+        }
+      });
+
+      tg.sendData(JSON.stringify(data));
+      tg.close();
+    });
+  </script>
 </body>
 </html>
