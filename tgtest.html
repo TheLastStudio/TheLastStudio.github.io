@@ -47,6 +47,7 @@
       width: 100%;
       cursor: pointer;
     }
+    
     .rating-container {
       display: flex;
       justify-content: center;
@@ -54,6 +55,7 @@
       margin: 10px 0;
       font-size: 32px;
       user-select: none;
+      flex-direction: row-reverse;
     }
     
     .star {
@@ -62,13 +64,10 @@
       transition: color 0.2s;
     }
     
-    .star.active {
-      color: #FFD700;
-    }
-    
+    .star.active,
     .star:hover,
     .star:hover ~ .star {
-      color: #FFD70066;
+      color: #FFD700;
     }
   </style>
 </head>
@@ -308,6 +307,7 @@
   </script>
 </body>
 </html>
+
 
 
 
