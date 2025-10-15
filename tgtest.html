@@ -83,6 +83,7 @@
         input.type = "text";
         if (q.regex) input.pattern = q.regex;
         input.name = `q${index}`;
+        if (q.required) input.required = true;
         div.appendChild(input);
       }
 
@@ -94,6 +95,7 @@
           r.type = "radio";
           r.name = `q${index}`;
           r.value = i;
+          if (q.required && i === 1) r.required = true;
           const lbl = document.createElement("label");
           lbl.textContent = "⭐".repeat(i);
           opt.appendChild(r);
@@ -110,6 +112,7 @@
           r.type = "radio";
           r.name = `q${index}`;
           r.value = o;
+          if (q.required && i === 0) r.required = true;
           const lbl = document.createElement("label");
           lbl.textContent = o;
           opt.appendChild(r);
@@ -146,6 +149,19 @@
           other.name = `q${index}_other`;
           div.appendChild(other);
         }
+        if (q.required) {
+          const hiddenRequired = document.createElement("input");
+          hiddenRequired.type = "text";
+          hiddenRequired.style.display = "none";
+          hiddenRequired.required = true;
+          hiddenRequired.oninvalid = () => alert("Будь ласка, виберіть хоча б один варіант.");
+          div.appendChild(hiddenRequired);
+    
+          div.addEventListener("change", () => {
+            const anyChecked = div.querySelectorAll("input[type=checkbox]:checked").length > 0;
+            hiddenRequired.value = anyChecked ? "ok" : "";
+          });
+        }
       }
 
       form.appendChild(div);
@@ -159,6 +175,12 @@
 
     form.addEventListener("submit", e => {
       e.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      
       const data = {};
       decoded.questions.forEach((q, i) => {
         if (q.type === "multi") {
@@ -184,4 +206,5 @@
   </script>
 </body>
 </html>
+
 
