@@ -243,7 +243,14 @@
         else if (q.type === "single") {
           const chosen = form.querySelector(`input[name=q${i}]:checked`);
           const other = form.querySelector(`input[name=q${i}_other]`);
-          data[q.text] = chosen ? chosen.value : (other?.value || null);
+        
+          if (chosen && chosen.value === "__other__") {
+            data[q.text] = other?.value?.trim() || null;
+          } else if (chosen) {
+            data[q.text] = chosen.value;
+          } else {
+            data[q.text] = other?.value?.trim() || null;
+          }
         }
         else {
           const field = form.querySelector(`[name=q${i}]`);
@@ -257,6 +264,7 @@
   </script>
 </body>
 </html>
+
 
 
 
