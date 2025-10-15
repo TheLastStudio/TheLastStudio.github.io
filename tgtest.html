@@ -105,7 +105,8 @@
       }
 
       else if (q.type === "single") {
-        q.options.forEach(o => {
+        const radios = [];
+        q.options.forEach((o, i) => {
           const opt = document.createElement("div");
           opt.className = "option";
           const r = document.createElement("input");
@@ -118,17 +119,52 @@
           opt.appendChild(r);
           opt.appendChild(lbl);
           div.appendChild(opt);
+          radios.push(r);
         });
+      
+        let otherInput = null;
         if (q.other) {
-          const other = document.createElement("input");
-          other.type = "text";
-          other.placeholder = "Інше...";
-          other.name = `q${index}_other`;
-          div.appendChild(other);
+          const opt = document.createElement("div");
+          opt.className = "option";
+          const r = document.createElement("input");
+          r.type = "radio";
+          r.name = `q${index}`;
+          r.value = "__other__";
+          const lbl = document.createElement("label");
+          lbl.textContent = "Інше:";
+          otherInput = document.createElement("input");
+          otherInput.type = "text";
+          otherInput.placeholder = "Введіть свій варіант...";
+          otherInput.name = `q${index}_other`;
+          otherInput.disabled = true;
+      
+          opt.appendChild(r);
+          opt.appendChild(lbl);
+          opt.appendChild(otherInput);
+          div.appendChild(opt);
+      
+          r.addEventListener("change", () => {
+            otherInput.disabled = !r.checked;
+            if (r.checked && q.required) otherInput.required = true;
+            else otherInput.required = false;
+          });
+        }
+      
+        if (q.required) {
+          div.addEventListener("change", () => {
+            const checked = div.querySelector("input[type=radio]:checked");
+            if (!checked) return;
+            if (checked.value === "__other__") {
+              if (otherInput) otherInput.required = true;
+            } else {
+              if (otherInput) otherInput.required = false;
+            }
+          });
         }
       }
 
       else if (q.type === "multi") {
+        const checkboxes = [];
         q.options.forEach(o => {
           const opt = document.createElement("div");
           opt.className = "option";
@@ -136,33 +172,48 @@
           c.type = "checkbox";
           c.name = `q${index}`;
           c.value = o;
+          opt.appendChild(c);
           const lbl = document.createElement("label");
           lbl.textContent = o;
-          opt.appendChild(c);
           opt.appendChild(lbl);
           div.appendChild(opt);
+          checkboxes.push(c);
         });
+      
+        let otherInput = null;
         if (q.other) {
-          const other = document.createElement("input");
-          other.type = "text";
-          other.placeholder = "Інше...";
-          other.name = `q${index}_other`;
-          div.appendChild(other);
+          const opt = document.createElement("div");
+          opt.className = "option";
+          const lbl = document.createElement("label");
+          lbl.textContent = "Інше:";
+          otherInput = document.createElement("input");
+          otherInput.type = "text";
+          otherInput.placeholder = "Введіть свій варіант...";
+          otherInput.name = `q${index}_other`;
+          opt.appendChild(lbl);
+          opt.appendChild(otherInput);
+          div.appendChild(opt);
         }
+      
         if (q.required) {
           const hiddenRequired = document.createElement("input");
           hiddenRequired.type = "text";
           hiddenRequired.style.display = "none";
           hiddenRequired.required = true;
-          hiddenRequired.oninvalid = () => alert("Будь ласка, виберіть хоча б один варіант.");
+          hiddenRequired.oninvalid = () => tg.showAlert("Не всі обов'язкові поля заповнені.");
           div.appendChild(hiddenRequired);
-    
-          div.addEventListener("change", () => {
-            const anyChecked = div.querySelectorAll("input[type=checkbox]:checked").length > 0;
-            hiddenRequired.value = anyChecked ? "ok" : "";
-          });
+      
+          const updateValidity = () => {
+            const anyChecked = checkboxes.some(c => c.checked);
+            const otherFilled = otherInput && otherInput.value.trim().length > 0;
+            hiddenRequired.value = (anyChecked || otherFilled) ? "ok" : "";
+          };
+      
+          div.addEventListener("change", updateValidity);
+          if (otherInput) otherInput.addEventListener("input", updateValidity);
         }
       }
+
 
       form.appendChild(div);
     }
@@ -206,5 +257,6 @@
   </script>
 </body>
 </html>
+
 
 
