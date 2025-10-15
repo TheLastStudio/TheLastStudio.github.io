@@ -1,73 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Web App Form</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        body {
-            font-family: sans-serif;
-            color: var(--tg-theme-text-color);
-            background: var(--tg-theme-bg-color);
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"],
-        input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid var(--tg-theme-hint-color);
-            border-radius: 4px;
-            background: var(--tg-theme-secondary-bg-color);
-            color: var(--tg-theme-text-color);
-        }
-        button {
-            background-color: var(--tg-theme-button-color);
-            color: var(--tg-theme-button-text-color);
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Опитування</title>
+<style>
+  body { font-family: sans-serif; padding: 1em; }
+  div.question { margin-bottom: 1em; }
+  label { display: block; }
+</style>
 </head>
 <body>
-    <h1>Order Form</h1>
-    <div class="form-group">
-        <label for="item">Item Name:</label>
-        <input type="text" id="item" name="item" required>
-    </div>
-    <div class="form-group">
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" min="1" required>
-    </div>
-    <button id="submitButton">Submit Order</button>
+<h2>Опитування</h2>
+<form id="voteForm"></form>
+<button id="submitBtn">Надіслати</button>
 
-    <script>
-        Telegram.WebApp.ready();
-        Telegram.WebApp.MainButton.setText('Submit Order').show();
+<script>
+let Telegram = window.Telegram ? window.Telegram.WebApp : null;
 
-        document.getElementById('submitButton').addEventListener('click', function() {
-            const item = document.getElementById('item').value;
-            const quantity = document.getElementById('quantity').value;
+// fallback для тестування без Telegram
+const TEST_MODE = !Telegram;
+if(TEST_MODE) {
+    console.log("Тестовий режим: відповіді не надсилатимуться у Telegram");
+}
 
-            if (item && quantity) {
-                const data = JSON.stringify({ item: item, quantity: parseInt(quantity) });
-                Telegram.WebApp.sendData(data);
-                Telegram.WebApp.close();
-            } else {
-                Telegram.WebApp.showAlert('Please fill in all fields.');
-            }
+// отримуємо JSON з URL (base64)
+function getVoteData() {
+  const params = new URLSearchParams(window.location.search);
+  const b64 = params.get("data");
+  if(!b64) return null;
+  try { return JSON.parse(atob(b64)); }
+  catch(e) { console.error(e); return null; }
+}
+
+const voteData = getVoteData();
+if(!voteData) document.body.innerHTML = "<p>Не вдалося завантажити опитування.</p>";
+
+// створюємо форму
+function createForm(json) {
+  const form = document.getElementById("voteForm");
+  json.questions.forEach((q,index) => {
+    const div = document.createElement("div");
+    div.className = "question";
+    div.dataset.index = index;
+    div.dataset.type = q.type;
+
+    const p = document.createElement("p");
+    p.textContent = q.text;
+    div.appendChild(p);
+
+    if(q.type === "text") {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.name = `q${index}`;
+      if(q.regex) input.dataset.regex = q.regex;
+      div.appendChild(input);
+    }
+
+    if(q.type === "single" || q.type === "multi") {
+      q.options.forEach(opt => {
+        const label = document.createElement("label");
+        const inp = document.createElement("input");
+        inp.type = (q.type === "single") ? "radio" : "checkbox";
+        inp.name = `q${index}`;
+        inp.value = opt;
+        label.appendChild(inp);
+        label.appendChild(document.createTextNode(" " + opt));
+        div.appendChild(label);
+      });
+
+      // "Інше" опціонально
+      if(q.allow_other) {
+        const label = document.createElement("label");
+        const inp = document.createElement("input");
+        inp.type = (q.type === "single") ? "radio" : "checkbox";
+        inp.name = `q${index}`;
+        inp.value = "__other__";
+        label.appendChild(inp);
+        label.appendChild(document.createTextNode(" Інше: "));
+        const textInput = document.createElement("input");
+        textInput.type = "text";
+        textInput.style.display = "none";
+        label.appendChild(textInput);
+
+        // показати текстове поле тільки при виборі "Інше"
+        inp.addEventListener("change", e => {
+            textInput.style.display = inp.checked ? "inline-block" : "none";
         });
-    </script>
+        div.appendChild(label);
+      }
+    }
+
+    form.appendChild(div);
+  });
+}
+
+createForm(voteData);
+
+// збирання даних
+function collectData() {
+  const obj = {};
+  voteData.questions.forEach((q,index) => {
+    const name = `q${index}`;
+    const div = document.querySelector(`div.question[data-index="${index}"]`);
+    if(q.type === "text") {
+      const input = div.querySelector(`input[name="${name}"]`);
+      if(input.dataset.regex) {
+        const regex = new RegExp(input.dataset.regex);
+        if(!regex.test(input.value)) {
+          alert(`Помилка у питанні: ${q.text}`);
+          throw "regex fail";
+        }
+      }
+      obj[name] = input.value;
+    } else if(q.type === "single") {
+      let val = div.querySelector(`input[name="${name}"]:checked`);
+      if(val) {
+        if(val.value === "__other__") {
+          const otherVal = val.nextElementSibling.value;
+          obj[name] = "Інше: " + otherVal;
+        } else obj[name] = val.value;
+      }
+    } else if(q.type === "multi") {
+      let vals = [];
+      div.querySelectorAll(`input[name="${name}"]:checked`).forEach(i => {
+        if(i.value === "__other__") {
+          vals.push("Інше: " + i.nextElementSibling.value);
+        } else vals.push(i.value);
+      });
+      obj[name] = vals;
+    }
+  });
+  return obj;
+}
+
+// надсилання
+document.getElementById("submitBtn").addEventListener("click", () => {
+  try {
+    const data = collectData();
+    if(TEST_MODE) {
+      console.log("Відповідь (тестовий режим):", data);
+      alert("Відповідь зібрана. Подивись у консолі.");
+    } else {
+      Telegram.sendData(JSON.stringify(data));
+    }
+  } catch(e) {
+    console.warn("Не надіслано:", e);
+  }
+});
+</script>
 </body>
 </html>
