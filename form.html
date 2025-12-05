@@ -4,30 +4,58 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Таємний Санта від FF</title>
-<style>
-  /* Простий стиль — використаємо theme params з Telegram WebApp, якщо доступні */
-  :root {
-    --bg: #ffffff;
-    --text: #000000;
-    --accent: #2fa4e7;
-  }
-  body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--text); padding: 12px; }
-  .container { max-width:720px; margin: 0 auto; }
-  h1 { font-size: 1.4rem; }
-  label { display:block; margin-top:12px; font-weight:600; }
-  input[type="text"], textarea { width:100%; padding:8px; margin-top:6px; border-radius:6px; border:1px solid #ccc; }
-  .btn { display:inline-block; margin-top:12px; padding:10px 14px; border-radius:8px; background:var(--accent); color:white; text-decoration:none; cursor:pointer; border:none; }
-  .info { background:#f7f7f7; padding:10px; border-radius:8px; margin-bottom:12px; }
-</style>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: system-ui, sans-serif;
+
+      /* Telegram automatic theme adaptation */
+      background: var(--tg-theme-bg-color);
+      color: var(--tg-theme-text-color);
+
+      /* for dark theme inputs */
+      --input-bg: var(--tg-theme-secondary-bg-color);
+      --input-text: var(--tg-theme-text-color);
+      --input-border: var(--tg-theme-hint-color);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--input-text);
+      font-size: 16px;
+    }
+
+    #submitBtn {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 16px;
+      background: var(--tg-theme-button-color);
+      color: var(--tg-theme-button-text-color);
+      border: none;
+      font-size: 18px;
+    }
+  </style>
 </head>
 <body>
 <div class="container">
   <div class="info">
     <strong>Що це таке?</strong>
     <p>Ви заповнюєте анкету, де коротко розказуєте про себе. 
-      Коли всі заповнять анкети, то вам на пошту надійде анонімна анкета іншої людини, підписана номером. 
-      Ваша задача – придумати для цієї людини цікавий подарунок. Бюджет ≈ 300-400₴. Детальніші правила є в /rules.
-      Потім, коли всі подарунки будуть зібрані, вам прийде номер, за яким отримаєте подарунок, який зробив ваш Таємний Санта!</p>
+      Коли всі заповнять анкети, то вам надійде анонімна анкета іншої людини, підписана номером. 
+      Ваша задача – придумати для цієї людини цікавий подарунок.</p>
+    <p>Бюджет ≈ 300-400₴. Детальніші правила є в /rules.</p>
+    <p>Потім, коли всі подарунки будуть зібрані, вам прийде номер, за яким отримаєте подарунок, який зробив ваш Таємний Санта!</p>
   </div>
 
   <h1>Анкета</h1>
@@ -53,7 +81,7 @@
       <p>Ви можете повторно заповнити форму поки триває реєстрація, щоб змінити свою анкету.</p>
     </div>
 
-    <button type="button" id="sendBtn" class="btn">Відправити</button>
+    <button type="button" id="submitBtn" class="btn">Відправити</button>
   </form>
 
   <div id="status" style="margin-top:12px;"></div>
@@ -74,7 +102,7 @@
     console.log("No Telegram WebApp theme:", e);
   }
 
-  document.getElementById('sendBtn').addEventListener('click', function(){
+  document.getElementById('submitBtn').addEventListener('click', function(){
     const answers = {
       "Хобі/інтереси": document.getElementById('q1').value.trim(),
       "Улюблений колір/стиль": document.getElementById('q2').value.trim(),
