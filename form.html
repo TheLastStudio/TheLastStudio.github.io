@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Таємний Санта від FF</title>
+<style>
+  /* Простий стиль — використаємо theme params з Telegram WebApp, якщо доступні */
+  :root {
+    --bg: #ffffff;
+    --text: #000000;
+    --accent: #2fa4e7;
+  }
+  body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--text); padding: 12px; }
+  .container { max-width:720px; margin: 0 auto; }
+  h1 { font-size: 1.4rem; }
+  label { display:block; margin-top:12px; font-weight:600; }
+  input[type="text"], textarea { width:100%; padding:8px; margin-top:6px; border-radius:6px; border:1px solid #ccc; }
+  .btn { display:inline-block; margin-top:12px; padding:10px 14px; border-radius:8px; background:var(--accent); color:white; text-decoration:none; cursor:pointer; border:none; }
+  .info { background:#f7f7f7; padding:10px; border-radius:8px; margin-bottom:12px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="info">
+    <strong>Що це таке?</strong>
+    <p>Ви заповнюєте анкету, де коротко розказуєте про себе. 
+      Коли всі заповнять анкети, то вам на пошту надійде анонімна анкета іншої людини, підписана номером. 
+      Ваша задача – придумати для цієї людини цікавий подарунок. Бюджет ≈ 300-400₴. Детальніші правила є в /rules.
+      Потім, коли всі подарунки будуть зібрані, вам прийде номер, за яким отримаєте подарунок, який зробив ваш Таємний Санта!</p>
+  </div>
+
+  <h1>Анкета</h1>
+  <form id="santaForm">
+    <label>ПІБ та група</label>
+    <small>Щоб знати, де вас шукати, якщо ви не встигнете забрати свій подарунок або виникнуть якісь проблеми.</small>
+    <input id="q1" type="text" />
+
+    <label>Вкажіть ваші інтереси або хобі</label>
+    <textarea id="q2" type="text" rows="2"></textarea>
+
+    <label>Розкажіть про найкумендіший або найбільш невдалий подарунок, який вам колись дарували</label>
+    <textarea id="q3" type="text" rows="2"></textarea>
+
+    <label>Розкажіть про подарунок, що викликав у вас найбільше емоцій</label>
+    <textarea id="q4" type="text" rows="2"></textarea>
+
+    <label>Побажання або важливі прохання для вашого Таємного Санти</label>
+    <textarea id="q5" type="text" rows="2"></textarea>
+
+    <div class="info" style="margin-top:12px;">
+      <strong>Проявіть свій креатив, щоб отримати креативний подарунок!</strong>
+      <p>Ви можете повторно заповнити форму поки триває реєстрація, щоб змінити свою анкету.</p>
+    </div>
+
+    <button type="button" id="sendBtn" class="btn">Відправити</button>
+  </form>
+
+  <div id="status" style="margin-top:12px;"></div>
+</div>
+
+<script>
+  // Якщо WebApp доступний, підлаштуємо кольори
+  try {
+    const tg = window.Telegram?.WebApp;
+    if (tg && tg.initDataUnsafe) {
+      const theme = tg.initDataUnsafe.themeParams || {};
+      // apply some theme params if present
+      if (theme.bg_color) document.documentElement.style.setProperty('--bg', theme.bg_color);
+      if (theme.text_color) document.documentElement.style.setProperty('--text', theme.text_color);
+      if (theme.button_color) document.documentElement.style.setProperty('--accent', theme.button_color);
+    }
+  } catch(e) {
+    console.log("No Telegram WebApp theme:", e);
+  }
+
+  document.getElementById('sendBtn').addEventListener('click', function(){
+    const answers = {
+      "Хобі/інтереси": document.getElementById('q1').value.trim(),
+      "Улюблений колір/стиль": document.getElementById('q2').value.trim(),
+      "Розмір/тип": document.getElementById('q3').value.trim(),
+      "Що не подобається/алергії": document.getElementById('q4').value.trim(),
+      "Побажання": document.getElementById('q5').value.trim()
+    };
+    const payload = { answers: answers, sent_at: new Date().toISOString() };
+
+    // If running inside Telegram WebApp, use sendData so bot receives it as web_app_data
+    if (window.Telegram && window.Telegram.WebApp) {
+      try {
+        window.Telegram.WebApp.sendData(JSON.stringify(payload));
+        document.getElementById('status').innerText = "Відправлено. Дякуємо!";
+      } catch (e) {
+        document.getElementById('status').innerText = "Помилка відправлення через WebApp: " + e;
+      }
+    } else {
+      // As fallback: show payload and direct user to copy/paste (since static page is hosted publicly)
+      document.getElementById('status').innerText = "Ця форма повинна відкриватись у Telegram (WebApp). Якщо ви відкрили в браузері, скопіюйте цей JSON і відправте боту:\n" + JSON.stringify(payload, null, 2);
+    }
+  });
+</script>
+</body>
+</html>
