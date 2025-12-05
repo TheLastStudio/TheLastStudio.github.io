@@ -122,11 +122,11 @@
 
   submitBtn.addEventListener('click', function(){
     const answers = {
-      "Хобі/інтереси": fields[0].value.trim(),
-      "Улюблений колір/стиль": fields[1].value.trim(),
-      "Розмір/тип": fields[2].value.trim(),
-      "Що не подобається/алергії": fields[3].value.trim(),
-      "Побажання": fields[4].value.trim()
+      "ПІБ та група": fields[0].value.trim(),
+      "Вкажіть ваші інтереси або хобі": fields[1].value.trim(),
+      "Розкажіть про найкумендіший або найбільш невдалий подарунок, який вам колись дарували": fields[2].value.trim(),
+      "Розкажіть про подарунок, що викликав у вас найбільше емоцій": fields[3].value.trim(),
+      "Побажання або важливі прохання для вашого Таємного Санти": fields[4].value.trim()
     };
     const payload = { answers: answers, sent_at: new Date().toISOString() };
 
